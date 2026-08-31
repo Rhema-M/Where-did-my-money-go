@@ -1,4 +1,4 @@
-# 💰 Where Did My Money Go?
+#  Where Did My Money Go?
 
 **Where Did My Money Go?** is a full-stack personal finance tracker designed to help users record, categorize, and understand their spending.
 
@@ -8,7 +8,7 @@ The project is being developed in multiple versions, with each version introduci
 
 ---
 
-## 🎯 Project Goal
+##  Project Goal
 
 The main goal of this project is to gain practical experience building a complete application.
 
@@ -29,7 +29,7 @@ The goal is not simply to make the application work, but to understand **why eac
 
 ---
 
-## 📌 Current Version
+##  Current Version
 
 ### Version 1 — Backend
 
@@ -41,7 +41,7 @@ The frontend will be introduced in **Version 2**.
 
 ---
 
-## ✨ Features
+##  Features
 
 ### Currently Implemented
 
@@ -69,7 +69,7 @@ The frontend will be introduced in **Version 2**.
 
 ---
 
-## 🛠️ Tech Stack
+##  Tech Stack
 
 | Technology          | Purpose                             |
 | ------------------- | ----------------------------------- |
@@ -84,7 +84,7 @@ The frontend will be introduced in **Version 2**.
 
 ---
 
-## 🏗️ Project Structure
+##  Project Structure
 
 ```text
 where-did-my-money-go/
@@ -118,7 +118,7 @@ The `postman` directory contains resources used to test the REST API endpoints.
 
 ---
 
-## 🗄️ Database Design
+##  Database Design
 
 The application currently uses three relational tables:
 
@@ -147,7 +147,7 @@ Category
 
 ---
 
-## 🧪 API Testing
+##  API Testing
 
 The API is tested using **Postman**.
 
@@ -164,7 +164,7 @@ This allows the backend to be tested independently before the frontend is develo
 
 ---
 
-## 🚀 Getting Started
+##  Getting Started
 
 ### 1. Clone the Repository
 
@@ -232,7 +232,7 @@ http://127.0.0.1:5000
 
 ---
 
-## 📈 Development Progress
+##  Development Progress
 
 ### Version 1 — Backend
 
@@ -262,7 +262,7 @@ http://127.0.0.1:5000
 
 ---
 
-## 🗺️ Roadmap
+##  Roadmap
 
 ### Version 1 — Backend Foundation
 
@@ -311,7 +311,7 @@ The roadmap may change as new concepts are learned and new ideas are introduced 
 
 ---
 
-## 📚 What I'm Learning
+##  What I'm Learning
 
 This project is being developed as a practical way to learn software development by building something from scratch.
 
@@ -334,7 +334,7 @@ The project will continue to evolve as new concepts are learned.
 
 ---
 
-## 👨‍💻 Author
+##  Author
 
 **Rhema Miller**
 
@@ -343,7 +343,7 @@ Aspiring Full-Stack Developer
 
 ---
 
-## ⭐ Project
+##  Project
 
 This project is continuously being developed as part of my journey toward becoming a better software developer.
 
