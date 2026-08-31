@@ -1,46 +1,92 @@
-
 # 💰 Where Did My Money Go?
 
-A full-stack personal finance tracker built with **Flask** and **MySQL** that helps users record expenses, categorize spending, and understand where their money goes.
+**Where Did My Money Go?** is a full-stack personal finance tracker designed to help users record, categorize, and understand their spending.
 
-This project is part of my software engineering portfolio and is being developed using real-world backend practices including REST APIs, database design, version control, and Postman testing.
+This project was created primarily as a **learning project to understand how real-world applications are built from the ground up**. Rather than focusing only on the final product, the project focuses on learning the development process — from planning and database design to building REST APIs, connecting a backend to a database, testing endpoints, using Git, and eventually building a frontend.
 
----
-
-## Preview
-
-> Frontend coming in Version 2.
-
-Current version focuses on building a production-style backend API.
+The project is being developed in multiple versions, with each version introducing new concepts and functionality.
 
 ---
 
-## Features
+## 🎯 Project Goal
 
-- Add new expense transactions
-- Store transactions in a MySQL database
-- Categorize spending (Food, Transport, Savings, etc.)
-- REST API built with Flask
-- Postman collection for endpoint testing
-- Modular project structure
+The main goal of this project is to gain practical experience building a complete application.
 
----
+Throughout the development process, I am learning how to:
 
-## Tech Stack
+* Design and structure an application
+* Design and work with relational databases
+* Build REST APIs using Flask
+* Connect Python applications to MySQL
+* Create and test API endpoints
+* Organize a backend using a modular structure
+* Use Git and GitHub for version control
+* Work with tools such as Postman
+* Build a frontend that communicates with a backend
+* Gradually introduce more advanced application features
 
-| Technology | Purpose |
-|------------|---------|
-| Python | Backend language |
-| Flask | REST API framework |
-| MySQL | Database |
-| MySQL Connector | Database connection |
-| Postman | API testing |
-| Git & GitHub | Version control |
+The goal is not simply to make the application work, but to understand **why each part of the application is needed and how the different components work together**.
 
 ---
 
-## Project Structure
+## 📌 Current Version
 
+### Version 1 — Backend
+
+The current version focuses on building the application's backend.
+
+At this stage, the application provides a Flask REST API that communicates with a MySQL database and allows transactions to be stored and retrieved.
+
+The frontend will be introduced in **Version 2**.
+
+---
+
+## ✨ Features
+
+### Currently Implemented
+
+* Add expense transactions
+* Retrieve stored transactions
+* Store transaction data in MySQL
+* Categorize transactions
+* Relational database structure
+* Flask REST API
+* Modular backend structure
+* Postman API testing
+* Git & GitHub version control
+
+### Planned Features
+
+* Update transactions
+* Delete transactions
+* Spending statistics
+* Monthly spending analytics
+* Budget tracking
+* React frontend
+* Interactive dashboard
+* User authentication
+* User accounts
+
+---
+
+## 🛠️ Tech Stack
+
+| Technology          | Purpose                             |
+| ------------------- | ----------------------------------- |
+| **Python**          | Backend programming language        |
+| **Flask**           | REST API framework                  |
+| **MySQL**           | Relational database                 |
+| **MySQL Connector** | Python-to-MySQL database connection |
+| **Postman**         | API development and testing         |
+| **Git**             | Version control                     |
+| **GitHub**          | Repository and project management   |
+| **React**           | Planned frontend framework          |
+
+---
+
+## 🏗️ Project Structure
+
+```text
 where-did-my-money-go/
 │
 ├── backend/
@@ -51,140 +97,254 @@ where-did-my-money-go/
 │   └── database.py
 │
 ├── postman/
+│
 ├── requirements.txt
 ├── .gitignore
 └── README.md
+```
+
+### Backend
+
+The `backend` directory contains the server-side application.
+
+* **`app.py`** — Main Flask application and API configuration
+* **`config.py`** — Database configuration and application settings
+* **`database.py`** — Handles the connection to MySQL
+* **`transactions.py`** — Handles transaction-related API endpoints
+
+### Postman
+
+The `postman` directory contains resources used to test the REST API endpoints.
 
 ---
 
-## Database
+## 🗄️ Database Design
 
-The project uses three relational tables:
+The application currently uses three relational tables:
 
-### User
-- id
-- name
-- email
+### Relationships
 
-### Category
-- id
-- name
+```text
+User
+  │
+  │ 1
+  │
+  │
+  │ Many
+  ▼
+Transaction
+  ▲
+  │ Many
+  │
+  │ 1
+  │
+Category
+```
 
-### Transaction
-- id
-- user_id
-- category_id
-- amount
-- description
-- transaction_date
-- created_at
-
-Relationships:
-
-- One User → Many Transactions
-- One Category → Many Transactions
-
----
-
-## API Endpoints
-
-### Get all transactions
-
-GET /transactions
-
-Returns every stored transaction.
-
-### Create a transaction
-
-POST /transactions
-
-Example JSON:
-
-{
-  "user_id": 1,
-  "category_id": 2,
-  "amount": 150.00,
-  "description": "Groceries",
-  "transaction_date": "2026-08-31"
-}
+* One **User** can have many transactions.
+* One **Category** can be associated with many transactions.
+* Each **Transaction** belongs to one user and one category.
 
 ---
 
-## Getting Started
+## 🧪 API Testing
 
-### 1. Clone the repository
+The API is tested using **Postman**.
 
+Postman is being used to learn how to:
+
+* Send HTTP requests
+* Test GET and POST endpoints
+* Send JSON request bodies
+* Inspect API responses
+* Identify and troubleshoot backend errors
+* Verify that data is correctly stored in MySQL
+
+This allows the backend to be tested independently before the frontend is developed.
+
+---
+
+## 🚀 Getting Started
+
+### 1. Clone the Repository
+
+```bash
 git clone https://github.com/YOUR_USERNAME/where-did-my-money-go.git
+```
 
-### 2. Navigate into the project
+### 2. Navigate into the Project
 
+```bash
 cd where-did-my-money-go
+```
 
-### 3. Create a virtual environment
+### 3. Create a Virtual Environment
 
+```bash
 python -m venv venv
+```
 
-### 4. Activate it
+### 4. Activate the Virtual Environment
 
-Windows:
+On Windows:
 
+```bash
 venv\Scripts\activate
+```
 
-### 5. Install dependencies
+### 5. Install Dependencies
 
+```bash
 pip install -r requirements.txt
+```
 
 ### 6. Configure MySQL
 
-Create a MySQL database and update your database credentials inside `config.py`.
+Create the required MySQL database and tables.
 
-### 7. Run the server
+Update the database credentials in:
 
+```text
+backend/config.py
+```
+
+Make sure your MySQL server is running before starting the Flask application.
+
+### 7. Start the Flask Server
+
+Navigate into the backend directory:
+
+```bash
 cd backend
+```
 
+Then run:
+
+```bash
 python app.py
+```
 
-The API will start on:
+The API will run locally at:
 
+```text
 http://127.0.0.1:5000
+```
 
 ---
 
-## Current Progress
+## 📈 Development Progress
 
-- [x] Project planning
-- [x] Database design
-- [x] Flask project structure
-- [x] MySQL integration
-- [x] GET endpoint
-- [x] POST endpoint
-- [x] Postman testing
-- [ ] UPDATE endpoint
-- [ ] DELETE endpoint
-- [ ] Statistics API
-- [ ] React frontend
-- [ ] User authentication
+### Version 1 — Backend
+
+* [ ] Project planning
+* [ ] Application structure
+* [ ] Database design
+* [ ] MySQL database setup
+* [ ] Flask application setup
+* [ ] MySQL integration
+* [ ] GET transactions endpoint
+* [ ] POST transactions endpoint
+* [ ] Postman testing
+* [ ] UPDATE transactions endpoint
+* [ ] DELETE transactions endpoint
+* [ ] Statistics API
+
+### Version 2 — Frontend & Application Features
+
+* [ ] React frontend
+* [ ] Dashboard
+* [ ] Transaction management interface
+* [ ] Spending charts
+* [ ] Monthly spending analytics
+* [ ] Budget tracking
+* [ ] User authentication
+* [ ] User accounts
 
 ---
 
-## Version Roadmap
+## 🗺️ Roadmap
 
-### Version 1 (Current)
-Backend REST API with MySQL and transaction management.
+### Version 1 — Backend Foundation
 
-### Version 2
-- React frontend
-- Dashboard with charts
-- Monthly spending analytics
-- Budget tracking
-- Authentication & user accounts
+Build the core backend of the application.
+
+**Focus:**
+
+* Python
+* Flask
+* REST APIs
+* MySQL
+* Database relationships
+* API testing
+* Git & GitHub
 
 ---
 
-## Author
+### Version 2 — Frontend
+
+Connect the backend to a user interface using React.
+
+**Planned features:**
+
+* Dashboard
+* Transaction forms
+* Transaction history
+* Spending categories
+* Charts and visualizations
+* Monthly spending overview
+
+---
+
+### Future Development
+
+As the project progresses, additional features may be introduced, including:
+
+* Authentication
+* Multiple user accounts
+* Personal budgets
+* Financial summaries
+* Advanced spending analytics
+* Improved validation and error handling
+* Deployment
+
+The roadmap may change as new concepts are learned and new ideas are introduced during development.
+
+---
+
+## 📚 What I'm Learning
+
+This project is being developed as a practical way to learn software development by building something from scratch.
+
+Some of the key concepts being explored include:
+
+* Backend development
+* REST API design
+* CRUD operations
+* Relational database design
+* SQL
+* Database relationships
+* Python application structure
+* Flask
+* HTTP requests and responses
+* API testing
+* Git workflows
+* Full-stack application architecture
+
+The project will continue to evolve as new concepts are learned.
+
+---
+
+## 👨‍💻 Author
 
 **Rhema Miller**
 
-Computer Systems Engineering Student | Aspiring Full-Stack Developer
+Computer Systems Engineering Student
+Aspiring Full-Stack Developer
 
-If you enjoyed this project, consider giving it a ⭐ on GitHub.
+---
+
+## ⭐ Project
+
+This project is continuously being developed as part of my journey toward becoming a better software developer.
+
+If you find the project interesting, feel free to ⭐ the repository on GitHub.
