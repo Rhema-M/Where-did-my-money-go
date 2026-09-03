@@ -2,6 +2,7 @@ from flask import Flask
 from flask_cors import CORS
 from routes.transactions import transactions_bp
 from routes.analytics import analytics_bp
+from flask_cors import CORS
 
 app = Flask(__name__)
 CORS(app)
