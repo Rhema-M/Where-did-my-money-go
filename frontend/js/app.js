@@ -1,5 +1,12 @@
 const API_URL = "http://127.0.0.1:5000";
 
+let transactionToDelete = null;
+let transactionToEdit = null;
+
+const deleteModal = document.getElementById("delete-modal");
+const confirmDeleteBtn = document.getElementById("confirm-delete");
+const cancelDeleteBtn = document.getElementById("cancel-delete");
+
 async function loadTransactions() {
 
     try {
@@ -19,6 +26,33 @@ async function loadTransactions() {
 
 }
 
+async function editTransaction(id) {
+
+    transactionToEdit = id;
+
+    try {
+
+        const response = await fetch(`${API_URL}/transactions/${id}`);
+        const transaction = await response.json();
+
+        document.getElementById("title").value = transaction.title;
+        document.getElementById("amount").value = transaction.amount;
+        document.getElementById("transaction-type").value = transaction.transaction_type;
+        document.getElementById("category").value = transaction.category_id;
+
+        const date = new Date(transaction.transaction_date);
+        const formattedDate = date.toISOString().split("T")[0];
+
+        document.getElementById("transaction-date").value = formattedDate;
+        document.getElementById("notes").value = transaction.notes || "";
+        document.querySelector("#transaction-form button").textContent = "Update Transaction";
+
+    } catch (error) {
+        console.error("Error loading transaction:", error);
+    }
+
+}
+
 function displayTransactions(transactions) {
 
     const tableBody = document.getElementById("transaction-list");
@@ -33,6 +67,15 @@ function displayTransactions(transactions) {
                 <td>${transaction.title}</td>
                 <td>${transaction.category}</td>
                 <td>R ${transaction.amount}</td>
+                <td>
+                    <button class="edit-btn" onclick="editTransaction(${transaction.id})">
+                        Edit
+                    </button>
+
+                    <button class="delete-btn" onclick="deleteTransaction(${transaction.id})">
+                        Delete
+                    </button>
+                </td>
             </tr>
         `;
 
@@ -83,21 +126,107 @@ async function addTransaction(event) {
 
     };
 
-    const response = await fetch(`${API_URL}/transactions`, {
+    try {
 
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(transaction)
+        let response;
 
-    });
+        if (transactionToEdit !== null) {
 
-    const result = await response.json();
-    console.log(result);
+            response = await fetch(
+                `${API_URL}/transactions/${transactionToEdit}`,
+                {
+                    method: "PUT",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify(transaction)
+                }
+            );
 
-    transactionForm.reset();
+        } else {
 
-    loadTransactions();
-    loadAnalytics();
+            response = await fetch(
+                `${API_URL}/transactions`,
+                {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json"
+                    },
+                    body: JSON.stringify(transaction)
+                }
+            );
+
+        }
+
+        const result = await response.json();
+
+        console.log(result);
+
+        transactionForm.reset();
+
+        transactionToEdit = null;
+
+        document.querySelector("#transaction-form button").textContent =
+            "Add Transaction";
+
+        loadTransactions();
+        loadAnalytics();
+        loadCategories();
+        loadSpendingTrend();
+
+    } catch (error) {
+
+        console.error("Error saving transaction:", error);
+
+    }
+
+}
+
+function deleteTransaction(id) {
+
+    transactionToDelete = id;
+
+    deleteModal.classList.remove("hidden");
+
+}
+
+async function confirmDeleteTransaction() {
+
+    if (transactionToDelete === null) return;
+
+    try {
+
+        const response = await fetch(
+            `${API_URL}/transactions/${transactionToDelete}`,
+            {
+                method: "DELETE"
+            }
+        );
+
+        const result = await response.json();
+
+        console.log(result);
+
+        closeDeleteModal();
+
+        loadTransactions();
+        loadAnalytics();
+        loadCategories();
+        loadSpendingTrend();
+
+    } catch (error) {
+
+        console.error(error);
+
+    }
+
+}
+
+function closeDeleteModal() {
+
+    transactionToDelete = null;
+
+    deleteModal.classList.add("hidden");
 
 }
 
@@ -247,11 +376,14 @@ async function loadSpendingTrend() {
 
 }
 
+const transactionForm = document.getElementById("transaction-form");
+
+confirmDeleteBtn.addEventListener("click", confirmDeleteTransaction);
+cancelDeleteBtn.addEventListener("click", closeDeleteModal);
+
+transactionForm.addEventListener("submit", addTransaction);
+
 loadTransactions();
 loadAnalytics();
 loadCategories();
 loadSpendingTrend();
-
-const transactionForm = document.getElementById("transaction-form");
-transactionForm.addEventListener("submit", addTransaction);
-
