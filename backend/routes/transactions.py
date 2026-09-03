@@ -6,7 +6,12 @@ transactions_bp = Blueprint("transactions", __name__)
 @transactions_bp.route("/transactions", methods=["POST"])
 def  create_transaction():
 
-    data = request.json
+    data = request.get_json(silent=True)
+
+    if not data:
+        return jsonify({
+            "error": "Invalid or missing JSON body"
+        }), 400
 
     required_fields = [
         "user_id", "category_id", "title", "amount", "transaction_type", "transaction_date"
@@ -17,6 +22,26 @@ def  create_transaction():
             return jsonify({
                 "error": f"{field} is required"
             }), 400
+
+    if not isinstance(data["amount"], (int, float)) or data["amount"] <= 0:
+        return jsonify({
+            "error": "Amount must be greater than 0"
+        }), 400
+
+    if data["transaction_type"] not in ["income", "expense"]:
+        return jsonify({
+            "error": "Transaction type must be income or expense"
+        }), 400
+
+    if not isinstance(data["category_id"], int):
+        return jsonify({
+            "error": "category_id must be an integer"
+        }), 400
+
+    if not data["title"].strip():
+        return jsonify({
+            "error": "Title cannot be empty"
+        }), 400
 
     conn = get_connection()
     cursor = conn.cursor()
@@ -96,7 +121,12 @@ def get_transaction(id):
 @transactions_bp.route("/transactions/<int:id>", methods=["PUT"])
 def update_transaction(id):
 
-    data = request.json
+    data = request.get_json(silent=True)
+
+    if not data:
+        return jsonify({
+            "error": "Invalid or missing JSON body"
+        }), 400
 
     required_fields = [
         "category_id", "title", "amount", "transaction_type", "transaction_date" 
@@ -107,6 +137,26 @@ def update_transaction(id):
             return jsonify({
                 "error": f"{field} is required"
             }), 400
+
+    if not isinstance(data["amount"], (int, float)) or data["amount"] <= 0:
+        return jsonify({
+            "error": "Amount must be greater than 0"
+        }), 400
+
+    if data["transaction_type"] not in ["income", "expense"]:
+        return jsonify({
+            "error": "Transaction type must be income or expense"
+        }), 400
+
+    if not isinstance(data["category_id"], int):
+        return jsonify({
+            "error": "category_id must be an integer"
+        }), 400
+
+    if not data["title"].strip():
+        return jsonify({
+            "error": "Title cannot be empty"
+        }), 400
 
     conn = get_connection()
     cursor = conn.cursor()
@@ -126,7 +176,7 @@ def update_transaction(id):
         conn.close()
 
         return jsonify({
-            "EROOR": "tRANSACTION NOT FOUND"
+            "EROOR": "TRANSACTION NOT FOUND"
         }), 404
 
     cursor.close()

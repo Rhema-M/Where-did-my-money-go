@@ -14,9 +14,10 @@ async function loadTransactions() {
         const response = await fetch(`${API_URL}/transactions`);
         const transactions = await response.json();
 
-        displayTransactions(transactions);
+        const filteredTransactions = filterTransactions(transactions);
+        displayTransactions(filteredTransactions);
 
-        document.getElementById("transaction-count").textContent = transactions.length;
+        document.getElementById("transaction-count").textContent = filteredTransactions.length;
 
     } catch (error) {
 
@@ -53,11 +54,60 @@ async function editTransaction(id) {
 
 }
 
+function filterTransactions(transactions) {
+
+    const searchTerm = document
+        .getElementById("search-transactions")
+        .value
+        .toLowerCase()
+        .trim();
+
+    const filterType = document
+        .getElementById("filter-type")
+        .value;
+
+    const filterCategory = document
+        .getElementById("filter-category")
+        .value;
+
+    return transactions.filter(transaction => {
+
+        const title = transaction.title.toLowerCase();
+
+        const matchesSearch = title.includes(searchTerm);
+
+        const matchesType =
+            filterType === "all" ||
+            transaction.transaction_type === filterType;
+
+        const matchesCategory =
+            filterCategory === "all" ||
+            transaction.category_id === parseInt(filterCategory);
+
+        return matchesSearch && matchesType && matchesCategory;
+
+    });
+
+}
+
 function displayTransactions(transactions) {
 
     const tableBody = document.getElementById("transaction-list");
 
     tableBody.innerHTML = "";
+
+            if (transactions.length === 0) {
+
+            tableBody.innerHTML = `
+                <tr>
+                    <td colspan="5" class="no-transactions">
+                        No transactions found.
+                    </td>
+                </tr>
+            `;
+
+            return;
+        }
 
     transactions.forEach(transaction => {
 
@@ -66,7 +116,7 @@ function displayTransactions(transactions) {
                 <td>${transaction.transaction_date}</td>
                 <td>${transaction.title}</td>
                 <td>${transaction.category}</td>
-                <td>R ${transaction.amount}</td>
+                <td>R ${parseFloat(transaction.amount).toFixed(2)}</td>
                 <td>
                     <button class="edit-btn" onclick="editTransaction(${transaction.id})">
                         Edit
@@ -113,18 +163,40 @@ async function addTransaction(event) {
 
     event.preventDefault();
 
-    const transaction = {
+            const title = document.getElementById("title").value.trim();
+            const amount = parseFloat(document.getElementById("amount").value);
+            const transactionType = document.getElementById("transaction-type").value;
+            const categoryId = parseInt(document.getElementById("category").value);
+            const transactionDate = document.getElementById("transaction-date").value;
+            const notes = document.getElementById("notes").value.trim();
 
-        user_id: 1,
+            if (title === "") {
+                alert("Please enter a description.");
+                return;
+            }
 
-        title: document.getElementById("title").value,
-        amount: parseFloat(document.getElementById("amount").value),
-        transaction_type: document.getElementById("transaction-type").value,
-        category_id: parseInt(document.getElementById("category").value),
-        transaction_date: document.getElementById("transaction-date").value,
-        notes: document.getElementById("notes").value
+            if (isNaN(amount) || amount <= 0) {
+                alert("Please enter a valid amount greater than R0.00.");
+                return;
+            }
 
-    };
+            if (!transactionDate) {
+                alert("Please select a transaction date.");
+                return;
+            }
+
+            const transaction = {
+
+                user_id: 1,
+
+                title: title,
+                amount: amount,
+                transaction_type: transactionType,
+                category_id: categoryId,
+                transaction_date: transactionDate,
+                notes: notes
+
+            };
 
     try {
 
@@ -160,9 +232,18 @@ async function addTransaction(event) {
 
         const result = await response.json();
 
+        if (!response.ok) {
+            alert(result.error || "Something went wrong.");
+            return;
+        }
+
         console.log(result);
 
         transactionForm.reset();
+
+        document.getElementById("search-transactions").value = "";
+        document.getElementById("filter-type").value = "all";
+        document.getElementById("filter-category").value = "all";
 
         transactionToEdit = null;
 
@@ -377,6 +458,34 @@ async function loadSpendingTrend() {
 }
 
 const transactionForm = document.getElementById("transaction-form");
+
+const searchInput = document.getElementById("search-transactions");
+if (searchInput) {
+    searchInput.addEventListener("input", loadTransactions);
+}
+
+const filterType = document.getElementById("filter-type");
+if (filterType) {
+    filterType.addEventListener("change", loadTransactions);
+}
+
+const filterCategory = document.getElementById("filter-category");
+if (filterCategory) {
+    filterCategory.addEventListener("change", loadTransactions);
+}
+
+const clearFiltersBtn = document.getElementById("clear-filters");
+if (clearFiltersBtn) {
+    clearFiltersBtn.addEventListener("click", () => {
+
+        document.getElementById("search-transactions").value = "";
+        document.getElementById("filter-type").value = "all";
+        document.getElementById("filter-category").value = "all";
+
+        loadTransactions();
+
+    });
+}
 
 confirmDeleteBtn.addEventListener("click", confirmDeleteTransaction);
 cancelDeleteBtn.addEventListener("click", closeDeleteModal);

@@ -423,3 +423,69 @@ tr:hover {
 .edit-btn:hover {
     background: #0f2f28;
 }
+
+.transaction-filters {
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr auto;
+    gap: 15px;
+    margin-bottom: 25px;
+    padding-bottom: 20px;
+    border-bottom: 1px solid #e7e2d9;
+}
+
+.filter-group {
+    display: flex;
+    flex-direction: column;
+}
+
+.filter-group label {
+    font-size: 13px;
+    font-weight: bold;
+    color: #59635c;
+    margin-bottom: 7px;
+}
+
+.filter-group input,
+.filter-group select {
+    padding: 11px 12px;
+    border: 1px solid #d8d2c5;
+    border-radius: 3px;
+    background-color: #faf8f3;
+    color: #202820;
+    font-size: 14px;
+}
+
+.filter-group input:focus,
+.filter-group select:focus {
+    outline: none;
+    border-color: #173f35;
+}
+
+@media (max-width: 700px) {
+    .transaction-filters {
+        grid-template-columns: 1fr;
+    }
+}
+
+.no-transactions {
+    text-align: center;
+    padding: 30px;
+    color: #6d756e;
+    font-style: italic;
+}
+
+#clear-filters {
+    padding: 11px 20px;
+    border: none;
+    border-radius: 3px;
+    background-color: #173f35;
+    color: white;
+    font-size: 14px;
+    font-weight: bold;
+    cursor: pointer;
+    align-self: end;
+}
+
+#clear-filters:hover {
+    background-color: #0f2f28;
+}
