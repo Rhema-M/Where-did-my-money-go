@@ -1,12 +1,16 @@
 from flask import Blueprint, request, jsonify
 from database import get_connection
+from flask_jwt_extended import jwt_required, get_jwt_identity
 
 transactions_bp = Blueprint("transactions", __name__)
 
 @transactions_bp.route("/transactions", methods=["POST"])
+@jwt_required()
 def  create_transaction():
 
     data = request.get_json(silent=True)
+
+    user_id = get_jwt_identity()
 
     if not data:
         return jsonify({
@@ -14,7 +18,7 @@ def  create_transaction():
         }), 400
 
     required_fields = [
-        "user_id", "category_id", "title", "amount", "transaction_type", "transaction_date"
+        "category_id", "title", "amount", "transaction_type", "transaction_date"
     ]
 
     for field in required_fields:
@@ -54,7 +58,7 @@ def  create_transaction():
     """
 
     values = (
-        data["user_id"],
+        user_id,
         data["category_id"],
         data["title"],
         data["amount"],
@@ -72,18 +76,24 @@ def  create_transaction():
     return jsonify({"message": "Transaction added"}), 201
 
 @transactions_bp.route("/transactions", methods=["GET"])
+@jwt_required()
 def get_transactions():
+
+    user_id = get_jwt_identity()
 
     conn = get_connection()
     cursor = conn.cursor(dictionary=True)
 
     cursor.execute("""
-        SELECT t.id, t.user_id, t.category_id, c.name AS category, t.title, t.amount, t.transaction_type, t.transaction_date, t.notes, t.created_at
+        SELECT t.id, t.user_id, t.category_id, c.name AS category,
+               t.title, t.amount, t.transaction_type,
+               t.transaction_date, t.notes, t.created_at
         FROM transaction t
         JOIN category c
             ON t.category_id = c.id
+        WHERE t.user_id = %s
         ORDER BY t.transaction_date DESC
-    """)
+    """, (user_id,))
 
     transactions = cursor.fetchall()
 
@@ -93,7 +103,10 @@ def get_transactions():
     return jsonify(transactions), 200
 
 @transactions_bp.route("/transactions/<int:id>", methods=["GET"])
+@jwt_required()
 def get_transaction(id):
+
+    user_id = get_jwt_identity()
 
     conn = get_connection()
     cursor = conn.cursor(dictionary=True)
@@ -104,7 +117,8 @@ def get_transaction(id):
         JOIN category c
             ON t.category_id = c.id
         WHERE t.id = %s
-    """, (id,))
+        AND t.user_id = %s
+    """, (id, user_id))
 
     transaction = cursor.fetchone()
 
