@@ -6,7 +6,7 @@ transactions_bp = Blueprint("transactions", __name__)
 
 @transactions_bp.route("/transactions", methods=["POST"])
 @jwt_required()
-def  create_transaction():
+def create_transaction():
 
     data = request.get_json(silent=True)
 
@@ -133,9 +133,11 @@ def get_transaction(id):
     return jsonify(transaction), 200
 
 @transactions_bp.route("/transactions/<int:id>", methods=["PUT"])
+@jwt_required()
 def update_transaction(id):
 
     data = request.get_json(silent=True)
+    user_id = get_jwt_identity()
 
     if not data:
         return jsonify({
@@ -179,8 +181,9 @@ def update_transaction(id):
     UPDATE transaction
     SET category_id =%s, title = %s, amount = %s, transaction_type = %s, transaction_date = %s, notes =%s
     WHERE id =%s
+    AND user_id = %s
     """, (
-        data["category_id"], data["title"], data["amount"], data["transaction_type"], data["transaction_date"], data.get("notes"), id
+        data["category_id"], data["title"], data["amount"], data["transaction_type"], data["transaction_date"], data.get("notes"), id, user_id
     ))
 
     conn.commit()
@@ -190,7 +193,7 @@ def update_transaction(id):
         conn.close()
 
         return jsonify({
-            "EROOR": "TRANSACTION NOT FOUND"
+            "error": "Transaction not found"
         }), 404
 
     cursor.close()
@@ -201,7 +204,10 @@ def update_transaction(id):
     }), 200
 
 @transactions_bp.route("/transactions/<int:id>", methods=["DELETE"])
+@jwt_required()
 def delete_transaction(id):
+
+    user_id = get_jwt_identity()
 
     conn = get_connection()
     cursor = conn.cursor()
@@ -209,7 +215,8 @@ def delete_transaction(id):
     cursor.execute("""
     DELETE FROM transaction
     WHERE id = %s
-    """, (id,))
+    AND user_id = %s
+    """, (id, user_id))
 
     conn.commit()
 

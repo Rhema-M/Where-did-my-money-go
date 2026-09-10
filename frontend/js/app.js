@@ -1,5 +1,16 @@
 const API_URL = "http://127.0.0.1:5000";
 
+function getAuthHeaders() {
+
+    const token = localStorage.getItem("access_token");
+
+    return {
+        "Content-Type": "application/json",
+        "Authorization": `Bearer ${token}`
+    };
+
+}
+
 let transactionToDelete = null;
 let transactionToEdit = null;
 
@@ -11,7 +22,9 @@ async function loadTransactions() {
 
     try {
 
-        const response = await fetch(`${API_URL}/transactions`);
+        const response = await fetch(`${API_URL}/transactions`, {
+            headers: getAuthHeaders()
+        });
         const transactions = await response.json();
 
         const filteredTransactions = filterTransactions(transactions);
@@ -33,8 +46,15 @@ async function editTransaction(id) {
 
     try {
 
-        const response = await fetch(`${API_URL}/transactions/${id}`);
+        const response = await fetch(`${API_URL}/transactions/${id}`, {
+            headers: getAuthHeaders()
+        });
         const transaction = await response.json();
+
+        if (!response.ok) {
+            alert(transaction.error || "Unable to load transaction.");
+            return;
+        }
 
         document.getElementById("title").value = transaction.title;
         document.getElementById("amount").value = transaction.amount;
@@ -139,7 +159,9 @@ async function loadAnalytics() {
 
     try {
 
-        const response = await fetch(`${API_URL}/analytics/summary`);
+        const response = await fetch(`${API_URL}/analytics/summary`,{
+            headers: getAuthHeaders()
+        });
         const analytics = await response.json();
 
         document.getElementById("balance").textContent =
@@ -187,8 +209,6 @@ async function addTransaction(event) {
 
             const transaction = {
 
-                user_id: 1,
-
                 title: title,
                 amount: amount,
                 transaction_type: transactionType,
@@ -208,9 +228,7 @@ async function addTransaction(event) {
                 `${API_URL}/transactions/${transactionToEdit}`,
                 {
                     method: "PUT",
-                    headers: {
-                        "Content-Type": "application/json"
-                    },
+                    headers: getAuthHeaders(),
                     body: JSON.stringify(transaction)
                 }
             );
@@ -221,9 +239,7 @@ async function addTransaction(event) {
                 `${API_URL}/transactions`,
                 {
                     method: "POST",
-                    headers: {
-                        "Content-Type": "application/json"
-                    },
+                    headers: getAuthHeaders(),
                     body: JSON.stringify(transaction)
                 }
             );
@@ -280,7 +296,8 @@ async function confirmDeleteTransaction() {
         const response = await fetch(
             `${API_URL}/transactions/${transactionToDelete}`,
             {
-                method: "DELETE"
+                method: "DELETE",
+                headers: getAuthHeaders()
             }
         );
 
@@ -315,7 +332,9 @@ async function loadCategories() {
 
     try {
 
-        const response = await fetch(`${API_URL}/analytics/categories`);
+        const response = await fetch(`${API_URL}/analytics/categories`, {
+            headers: getAuthHeaders()
+        });
         const categories = await response.json();
 
         const categoryBreakdown =
@@ -384,7 +403,9 @@ async function loadSpendingTrend() {
 
     try {
 
-        const response = await fetch(`${API_URL}/analytics/trend`);
+        const response = await fetch(`${API_URL}/analytics/trend`, {
+            headers: getAuthHeaders()
+        });
         const trend = await response.json();
 
         const trendData = document.getElementById("trend-data");
