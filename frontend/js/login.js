@@ -31,6 +31,7 @@ loginForm.addEventListener("submit", async function (event) {
         }
 
         localStorage.setItem("access_token", result.access_token);
+        localStorage.setItem("user_name", result.user.name);
         window.location.href = "dashboard.html";
 
     } catch (error) {

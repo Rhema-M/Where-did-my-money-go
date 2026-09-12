@@ -1,4 +1,14 @@
 const API_URL = "http://127.0.0.1:5000";
+const token = localStorage.getItem("access_token");
+if (!token) {
+    window.location.href = "index.html";
+}
+
+const userName = localStorage.getItem("user_name");
+const welcomeText = document.getElementById("welcome-user");
+if (welcomeText && userName) {
+    welcomeText.textContent = `Welcome, ${userName}`;
+}
 
 function getAuthHeaders() {
 
@@ -9,6 +19,22 @@ function getAuthHeaders() {
         "Authorization": `Bearer ${token}`
     };
 
+}
+
+function handleUnauthorized(response) {
+
+    if (response.status === 401) {
+
+        localStorage.removeItem("access_token");
+
+        alert("Your session has expired. Please log in again.");
+
+        window.location.href = "index.html";
+
+        return true;
+    }
+
+    return false;
 }
 
 let transactionToDelete = null;
@@ -25,6 +51,9 @@ async function loadTransactions() {
         const response = await fetch(`${API_URL}/transactions`, {
             headers: getAuthHeaders()
         });
+
+        if (handleUnauthorized(response)) return;
+
         const transactions = await response.json();
 
         const filteredTransactions = filterTransactions(transactions);
@@ -49,6 +78,9 @@ async function editTransaction(id) {
         const response = await fetch(`${API_URL}/transactions/${id}`, {
             headers: getAuthHeaders()
         });
+
+        if (handleUnauthorized(response)) return;
+
         const transaction = await response.json();
 
         if (!response.ok) {
@@ -162,6 +194,9 @@ async function loadAnalytics() {
         const response = await fetch(`${API_URL}/analytics/summary`,{
             headers: getAuthHeaders()
         });
+
+        if (handleUnauthorized(response)) return;
+
         const analytics = await response.json();
 
         document.getElementById("balance").textContent =
@@ -301,6 +336,8 @@ async function confirmDeleteTransaction() {
             }
         );
 
+        if (handleUnauthorized(response)) return;
+
         const result = await response.json();
 
         console.log(result);
@@ -335,6 +372,9 @@ async function loadCategories() {
         const response = await fetch(`${API_URL}/analytics/categories`, {
             headers: getAuthHeaders()
         });
+
+        if (handleUnauthorized(response)) return;
+
         const categories = await response.json();
 
         const categoryBreakdown =
@@ -406,6 +446,9 @@ async function loadSpendingTrend() {
         const response = await fetch(`${API_URL}/analytics/trend`, {
             headers: getAuthHeaders()
         });
+
+        if (handleUnauthorized(response)) return;
+
         const trend = await response.json();
 
         const trendData = document.getElementById("trend-data");
@@ -478,6 +521,12 @@ async function loadSpendingTrend() {
 
 }
 
+function logout() {
+    localStorage.removeItem("access_token");
+    localStorage.removeItem("user_name");
+    window.location.href = "index.html";
+}
+
 const transactionForm = document.getElementById("transaction-form");
 
 const searchInput = document.getElementById("search-transactions");
@@ -508,8 +557,14 @@ if (clearFiltersBtn) {
     });
 }
 
+const logoutBtn = document.getElementById("logout-btn");
+if (logoutBtn) {
+    logoutBtn.addEventListener("click", logout);
+}
+
 confirmDeleteBtn.addEventListener("click", confirmDeleteTransaction);
 cancelDeleteBtn.addEventListener("click", closeDeleteModal);
+
 
 transactionForm.addEventListener("submit", addTransaction);
 
