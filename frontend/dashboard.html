@@ -12,10 +12,16 @@
 <body>
 
     <header>
-        <h1>Where Did My Money Go?</h1>
-        <p id="welcome-user">Welcome!</p>
+        <div class="header-content">
 
-        <button id="logout-btn">Logout</button>
+            <div class="header-text">
+                <h1>Where Did My Money Go?</h1>
+                <p id="welcome-user">Welcome!</p>
+            </div>
+
+            <button id="logout-btn">Logout</button>
+
+        </div>
     </header>
 
     <main>
@@ -23,29 +29,34 @@
         <section class="summary">
 
             <div class="card">
-                <h2>Balance</h2>
+                <div class="card-label">Balance</div>
                 <p id="balance">R 0.00</p>
             </div>
 
             <div class="card">
-                <h2>Income</h2>
+                <div class="card-label">Income</div>
                 <p id="income">R 0.00</p>
             </div>
 
             <div class="card">
-                <h2>Expenses</h2>
+                <div class="card-label">Expenses</div>
                 <p id="expenses">R 0.00</p>
             </div>
 
             <div class="card">
-                <h2>Transactions</h2>
+                <div class="card-label">Transactions</div>
                 <p id="transaction-count">0</p>
             </div>
 
         </section>
+
         <section class="add-transaction">
 
-            <h2>Add Transactions</h2>
+            <h2>Add Transaction</h2>
+
+            <p class="section-description">
+                Record a new income or expense transaction.
+            </p>
 
             <form id="transaction-form">
                 
@@ -94,6 +105,10 @@
         <section class="transactions">
 
             <h2>Recent Transactions</h2>
+
+            <p class="section-description">
+                View, search, and manage your recorded transactions.
+            </p>
 
             <div class="transaction-filters">
 
@@ -160,6 +175,10 @@
         <section class="analytics">
 
             <h2>Spending Overview</h2>
+            
+            <p class="section-description">
+                Understand where your money is going over time.
+            </p>
 
             <div id="analytics-data">
 

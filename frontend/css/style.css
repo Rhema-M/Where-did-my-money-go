@@ -49,13 +49,14 @@ main {
 .card {
     background-color: #ffffff;
     border: 1px solid #ddd7ca;
+    border-top: 4px solid #173f35;
     padding: 22px;
     border-radius: 4px;
 }
 
-.card h2 {
-    font-size: 14px;
-    font-weight: normal;
+.card-label {
+    font-size: 13px;
+    font-weight: bold;
     color: #6d756e;
     margin-bottom: 12px;
     text-transform: uppercase;
@@ -63,7 +64,7 @@ main {
 }
 
 .card p {
-    font-size: 27px;
+    font-size: 28px;
     font-weight: bold;
     color: #173f35;
 }
@@ -96,20 +97,27 @@ table {
 th {
     background-color: #f5f1e8;
     color: #59635c;
-    font-size: 13px;
+    font-size: 12px;
     font-weight: bold;
     text-align: left;
-    padding: 13px 10px;
+    padding: 13px 12px;
     border-bottom: 2px solid #d8d2c5;
+    text-transform: uppercase;
+    letter-spacing: 0.4px;
 }
 
 td {
-    padding: 15px 10px;
+    padding: 15px 12px;
     border-bottom: 1px solid #e7e2d9;
     font-size: 14px;
+    color: #202820;
 }
 
-tr:hover {
+tbody tr:last-child td {
+    border-bottom: none;
+}
+
+tbody tr:hover {
     background-color: #faf8f3;
 }
 
@@ -121,6 +129,46 @@ tr:hover {
 
 #analytics-data {
     color: #6d756e;
+}
+
+#category-breakdown {
+    padding-top: 5px;
+}
+
+.category-item {
+    margin-bottom: 22px;
+}
+
+.category-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 8px;
+    font-size: 14px;
+}
+
+.category-name {
+    font-weight: bold;
+    color: #202820;
+}
+
+.category-total {
+    color: #59635c;
+    font-weight: bold;
+}
+
+.category-bar,
+.trend-bar {
+    width: 100%;
+    height: 10px;
+    background-color: #e7e2d9;
+    overflow: hidden;
+}
+
+.category-fill {
+    height: 100%;
+    background-color: #d86f32;
+    transition: width 0.5s ease;
 }
 
 /* Responsive */
@@ -162,6 +210,16 @@ tr:hover {
         min-width: 600px;
     }
 
+    .header-content {
+        align-items: flex-start;
+        gap: 20px;
+    }
+
+    #logout-btn {
+        padding: 8px 12px;
+        font-size: 13px;
+    }
+
 }
 
 .add-transaction {
@@ -181,7 +239,8 @@ tr:hover {
 #transaction-form {
     display: grid;
     grid-template-columns: repeat(2, 1fr);
-    gap: 18px;
+    column-gap: 20px;
+    row-gap: 18px;
 }
 
 .form-group {
@@ -199,12 +258,13 @@ tr:hover {
 .form-group input,
 .form-group select,
 .form-group textarea {
-    padding: 11px 12px;
+    padding: 12px;
     border: 1px solid #d8d2c5;
     border-radius: 3px;
     background-color: #faf8f3;
     color: #202820;
     font-size: 14px;
+    transition: border-color 0.2s ease;
 }
 
 .form-group input:focus,
@@ -212,6 +272,7 @@ tr:hover {
 .form-group textarea:focus {
     outline: none;
     border-color: #173f35;
+    background-color: #ffffff;
 }
 
 .form-group textarea {
@@ -221,7 +282,7 @@ tr:hover {
 
 #transaction-form button {
     grid-column: span 2;
-    padding: 12px;
+    padding: 13px;
     border: none;
     border-radius: 3px;
     background-color: #d86f32;
@@ -229,6 +290,7 @@ tr:hover {
     font-size: 15px;
     font-weight: bold;
     cursor: pointer;
+    transition: background-color 0.2s ease;
 }
 
 #transaction-form button:hover {
@@ -293,13 +355,14 @@ tr:hover {
 }
 
 .trend-item {
-    margin-bottom: 20px;
+    margin-bottom: 22px;
 }
 
 .trend-header {
     display: flex;
     justify-content: space-between;
-    margin-bottom: 7px;
+    align-items: center;
+    margin-bottom: 8px;
     font-size: 14px;
 }
 
@@ -310,13 +373,7 @@ tr:hover {
 
 .trend-total {
     color: #59635c;
-}
-
-.trend-bar {
-    width: 100%;
-    height: 12px;
-    background-color: #e7e2d9;
-    overflow: hidden;
+    font-weight: bold;
 }
 
 .trend-fill {
@@ -325,18 +382,18 @@ tr:hover {
     transition: width 0.5s ease;
 }
 
-.delete-btn{
-    background:#c0392b;
-    color:white;
-    border:none;
-    padding:7px 14px;
-    cursor:pointer;
-    font-size:13px;
-    border-radius:3px;
+.delete-btn {
+    background-color: #c0392b;
+    color: white;
+    border: none;
+    padding: 7px 13px;
+    cursor: pointer;
+    font-size: 13px;
+    border-radius: 3px;
 }
 
-.delete-btn:hover{
-    background:#962d22;
+.delete-btn:hover {
+    background-color: #962d22;
 }
 
 /* Delete Modal */
@@ -410,10 +467,10 @@ tr:hover {
 }
 
 .edit-btn {
-    background: #173f35;
+    background-color: #173f35;
     color: white;
     border: none;
-    padding: 7px 14px;
+    padding: 7px 13px;
     cursor: pointer;
     font-size: 13px;
     border-radius: 3px;
@@ -421,7 +478,7 @@ tr:hover {
 }
 
 .edit-btn:hover {
-    background: #0f2f28;
+    background-color: #0f2f28;
 }
 
 .transaction-filters {
@@ -429,8 +486,9 @@ tr:hover {
     grid-template-columns: 2fr 1fr 1fr auto;
     gap: 15px;
     margin-bottom: 25px;
-    padding-bottom: 20px;
-    border-bottom: 1px solid #e7e2d9;
+    padding: 18px;
+    background-color: #faf8f3;
+    border: 1px solid #e7e2d9;
 }
 
 .filter-group {
@@ -476,7 +534,7 @@ tr:hover {
 
 #clear-filters {
     padding: 11px 20px;
-    border: none;
+    border: 1px solid #173f35;
     border-radius: 3px;
     background-color: #173f35;
     color: white;
@@ -488,4 +546,38 @@ tr:hover {
 
 #clear-filters:hover {
     background-color: #0f2f28;
+}
+
+/* Header Layout */
+
+.header-content {
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+#logout-btn {
+    padding: 10px 18px;
+    border: 1px solid #d9e5df;
+    border-radius: 3px;
+    background-color: transparent;
+    color: white;
+    font-size: 14px;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+#logout-btn:hover {
+    background-color: #d86f32;
+    border-color: #d86f32;
+}
+
+.section-description {
+    color: #6d756e;
+    font-size: 14px;
+    margin-top: -12px;
+    margin-bottom: 22px;
 }
