@@ -22,7 +22,7 @@ function handleUnauthorized(response) {
         localStorage.removeItem("access_token");
         localStorage.removeItem("user_name");
 
-        alert("Your session has expired. Please log in again.");
+        showNotification("Your session has expired. Please log in again.", "error");
 
         window.location.href = "index.html";
 

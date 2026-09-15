@@ -29,6 +29,15 @@ async function loadAnalytics() {
 
 async function loadCategories() {
 
+    const categoryBreakdown =
+        document.getElementById("category-breakdown");
+
+    categoryBreakdown.innerHTML = `
+        <p class="loading-message">
+            Loading spending data...
+        </p>
+    `;
+
     try {
 
         const response = await fetch(`${API_URL}/analytics/categories`, {
@@ -39,15 +48,15 @@ async function loadCategories() {
 
         const categories = await response.json();
 
-        const categoryBreakdown =
-            document.getElementById("category-breakdown");
-
         categoryBreakdown.innerHTML = "";
 
         if (categories.length === 0) {
 
-            categoryBreakdown.innerHTML =
-                "<p>No expense data available.</p>";
+            categoryBreakdown.innerHTML = `
+                <p class="empty-message">
+                    No spending data available.
+                </p>
+            `;
 
             return;
         }
@@ -96,12 +105,28 @@ async function loadCategories() {
         });
 
     } catch (error) {
+
         console.error("Error loading categories:", error);
+
+        categoryBreakdown.innerHTML = `
+            <p class="error-message">
+                Unable to load spending data.
+            </p>
+        `;
     }
 
 }
 
 async function loadSpendingTrend() {
+
+    const trendData =
+        document.getElementById("trend-data");
+
+    trendData.innerHTML = `
+        <p class="loading-message">
+            Loading spending trend...
+        </p>
+    `;
 
     try {
 
@@ -113,14 +138,15 @@ async function loadSpendingTrend() {
 
         const trend = await response.json();
 
-        const trendData = document.getElementById("trend-data");
-
         trendData.innerHTML = "";
 
         if (trend.length === 0) {
 
-            trendData.innerHTML =
-                "<p>No spending data available.</p>";
+            trendData.innerHTML = `
+                <p class="empty-message">
+                    No spending trend data available.
+                </p>
+            `;
 
             return;
         }
@@ -179,6 +205,12 @@ async function loadSpendingTrend() {
 
         console.error("Error loading spending trend:", error);
 
+        trendData.innerHTML = `
+            <p class="error-message">
+                Unable to load spending trend.
+            </p>
+        `;
     }
 
 }
+

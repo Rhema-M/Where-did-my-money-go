@@ -44,3 +44,4 @@ loadTransactions();
 loadAnalytics();
 loadCategories();
 loadSpendingTrend();
+

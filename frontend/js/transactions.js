@@ -1,5 +1,15 @@
 async function loadTransactions() {
 
+    const tableBody = document.getElementById("transaction-list");
+
+    tableBody.innerHTML = `
+        <tr>
+            <td colspan="5" class="loading-message">
+                Loading transactions...
+            </td>
+        </tr>
+    `;
+    
     try {
 
         const response = await fetch(`${API_URL}/transactions`, {
@@ -83,7 +93,7 @@ async function editTransaction(id) {
         const transaction = await response.json();
 
         if (!response.ok) {
-            alert(transaction.error || "Unable to load transaction.");
+            showNotification(transaction.error || "Unable to load transaction.", "error");
             return;
         }
 
@@ -97,7 +107,7 @@ async function editTransaction(id) {
 
         document.getElementById("transaction-date").value = formattedDate;
         document.getElementById("notes").value = transaction.notes || "";
-        document.querySelector("#transaction-form button").textContent = "Update Transaction";
+
 
     } catch (error) {
         console.error("Error loading transaction:", error);
@@ -109,6 +119,8 @@ async function addTransaction(event) {
 
     event.preventDefault();
 
+
+
             const title = document.getElementById("title").value.trim();
             const amount = parseFloat(document.getElementById("amount").value);
             const transactionType = document.getElementById("transaction-type").value;
@@ -117,17 +129,17 @@ async function addTransaction(event) {
             const notes = document.getElementById("notes").value.trim();
 
             if (title === "") {
-                alert("Please enter a description.");
+                showNotification("Please enter a description.", "error");
                 return;
             }
 
             if (isNaN(amount) || amount <= 0) {
-                alert("Please enter a valid amount greater than R0.00.");
+                showNotification("Please enter a valid amount greater than R0.00.", "error");
                 return;
             }
 
             if (!transactionDate) {
-                alert("Please select a transaction date.");
+                showNotification("Please select a transaction date.", "error");
                 return;
             }
 
@@ -142,7 +154,14 @@ async function addTransaction(event) {
 
             };
 
+    const isEditing = transactionToEdit !== null;
+
+    const submitButton = document.querySelector("#transaction-form button");
+
     try {
+
+        submitButton.disabled = true;
+        submitButton.textContent = "Saving...";
 
         let response;
 
@@ -169,15 +188,21 @@ async function addTransaction(event) {
             );
 
         }
+        
+        if (handleUnauthorized(response)) return;
 
         const result = await response.json();
 
         if (!response.ok) {
-            alert(result.error || "Something went wrong.");
+            showNotification(result.error || "Something went wrong.", "error");
             return;
         }
 
-        console.log(result);
+        showNotification(
+            transactionToEdit === null
+                ? "Transaction added successfully!"
+                : "Transaction updated successfully!"
+        );
 
         transactionForm.reset();
 
@@ -198,6 +223,20 @@ async function addTransaction(event) {
     } catch (error) {
 
         console.error("Error saving transaction:", error);
+
+        showNotification(
+            "Unable to save the transaction. Please try again.",
+            "error"
+        );
+
+    } finally {
+
+        submitButton.disabled = false;
+
+        submitButton.textContent =
+            transactionToEdit === null
+                ? "Add Transaction"
+                : "Update Transaction";
 
     }
 
@@ -229,7 +268,7 @@ async function confirmDeleteTransaction() {
 
         const result = await response.json();
 
-        console.log(result);
+        showNotification("Transaction deleted successfully!");
 
         closeDeleteModal();
 
