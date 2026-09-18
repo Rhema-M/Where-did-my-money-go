@@ -9,7 +9,7 @@ async function loadTransactions() {
             </td>
         </tr>
     `;
-    
+
     try {
 
         const response = await fetch(`${API_URL}/transactions`, {
@@ -23,7 +23,8 @@ async function loadTransactions() {
         const filteredTransactions = filterTransactions(transactions);
         displayTransactions(filteredTransactions);
 
-        document.getElementById("transaction-count").textContent = filteredTransactions.length;
+        document.getElementById("transaction-count").textContent =
+            `${filteredTransactions.length} transaction${filteredTransactions.length === 1 ? "" : "s"}`;
 
     } catch (error) {
 
@@ -54,17 +55,34 @@ function displayTransactions(transactions) {
 
     transactions.forEach(transaction => {
 
+        const date = new Date(transaction.transaction_date);
+
+        const formattedDate = date.toLocaleDateString("en-ZA", {
+            day: "2-digit",
+            month: "short",
+            year: "numeric"
+        });
+
+                const amount = parseFloat(transaction.amount).toFixed(2);
+        const amountClass =
+            transaction.transaction_type === "income"
+                ? "income"
+                : "expense";
+        const amountSign =
+            transaction.transaction_type === "income"
+                ? "+"
+                : "−";
+
         const row = `
             <tr>
-                <td>${transaction.transaction_date}</td>
+                <td>${formattedDate}</td>
                 <td>${transaction.title}</td>
                 <td>${transaction.category}</td>
-                <td>R ${parseFloat(transaction.amount).toFixed(2)}</td>
+                <td class="${amountClass}">${amountSign} R ${amount}</td>
                 <td>
                     <button class="edit-btn" onclick="editTransaction(${transaction.id})">
                         Edit
                     </button>
-
                     <button class="delete-btn" onclick="deleteTransaction(${transaction.id})">
                         Delete
                     </button>
@@ -108,10 +126,28 @@ async function editTransaction(id) {
         document.getElementById("transaction-date").value = formattedDate;
         document.getElementById("notes").value = transaction.notes || "";
 
+        document.querySelector("#transaction-form button").textContent = "Update Transaction";
+
+        document.getElementById("cancel-edit-btn").classList.remove("hidden");
 
     } catch (error) {
         console.error("Error loading transaction:", error);
     }
+
+}
+
+function cancelEdit() {
+
+    transactionToEdit = null;
+
+    transactionForm.reset();
+
+    document.getElementById("submit-btn").textContent =
+        "Add Transaction";
+
+    document
+        .getElementById("cancel-edit-btn")
+        .classList.add("hidden");
 
 }
 
@@ -211,6 +247,8 @@ async function addTransaction(event) {
         document.getElementById("filter-category").value = "all";
 
         transactionToEdit = null;
+
+        document.getElementById("cancel-edit-btn").classList.add("hidden");
 
         document.querySelector("#transaction-form button").textContent =
             "Add Transaction";

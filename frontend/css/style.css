@@ -644,3 +644,78 @@ tbody tr:hover {
     padding: 20px;
     color: #c0392b;
 }
+.form-actions {
+    grid-column: span 2;
+    display: flex;
+    gap: 12px;
+}
+
+#submit-btn {
+    flex: 1;
+}
+
+#cancel-edit-btn {
+    background: #e7e2d9;
+    color: #173f35;
+    border: none;
+    padding: 12px;
+    font-weight: bold;
+    cursor: pointer;
+    border-radius: 3px;
+}
+
+#cancel-edit-btn:hover {
+    background: #d8d2c5;
+}
+
+.hidden {
+    display: none;
+}
+
+@media (max-width: 600px) {
+    .form-actions {
+        grid-column: span 1;
+        flex-direction: column;
+    }
+}
+.income {
+    color: #2e7d32;
+    font-weight: bold;
+}
+
+.expense {
+    color: #c0392b;
+    font-weight: bold;
+}
+
+#balance.positive {
+    color: #2e7d32;
+}
+
+#balance.negative {
+    color: #c0392b;
+}
+
+#balance.neutral {
+    color: #666;
+}
+
+.summary-income {
+    color: #2e7d32;
+    font-weight: bold;
+}
+
+.summary-expense {
+    color: #c0392b;
+    font-weight: bold;
+}
+
+#income.summary-income {
+    color: #2e7d32;
+    font-weight: bold;
+}
+
+#expenses.summary-expense {
+    color: #c0392b;
+    font-weight: bold;
+}

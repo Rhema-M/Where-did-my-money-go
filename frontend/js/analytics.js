@@ -1,8 +1,16 @@
 async function loadAnalytics() {
 
+    const balanceElement = document.getElementById("balance");
+    const incomeElement = document.getElementById("income");
+    const expensesElement = document.getElementById("expenses");
+
+    balanceElement.textContent = "Loading...";
+    incomeElement.textContent = "Loading...";
+    expensesElement.textContent = "Loading...";
+
     try {
 
-        const response = await fetch(`${API_URL}/analytics/summary`,{
+        const response = await fetch(`${API_URL}/analytics/summary`, {
             headers: getAuthHeaders()
         });
 
@@ -10,18 +18,41 @@ async function loadAnalytics() {
 
         const analytics = await response.json();
 
-        document.getElementById("balance").textContent =
+        balanceElement.textContent =
             `R ${analytics.balance.toFixed(2)}`;
 
-        document.getElementById("income").textContent =
+        balanceElement.classList.remove("positive", "negative", "neutral");
+
+        if (analytics.balance > 0) {
+
+            balanceElement.classList.add("positive");
+
+        } else if (analytics.balance < 0) {
+
+            balanceElement.classList.add("negative");
+
+        } else {
+
+            balanceElement.classList.add("neutral");
+
+        }
+
+        incomeElement.textContent =
             `R ${analytics.income.toFixed(2)}`;
 
-        document.getElementById("expenses").textContent =
+        expensesElement.textContent =
             `R ${analytics.expenses.toFixed(2)}`;
+
+        incomeElement.classList.add("summary-income");
+        expensesElement.classList.add("summary-expense");
 
     } catch (error) {
 
         console.error("Error loading analytics:", error);
+
+        balanceElement.textContent = "Unable to load";
+        incomeElement.textContent = "Unable to load";
+        expensesElement.textContent = "Unable to load";
 
     }
 

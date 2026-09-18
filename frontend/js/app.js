@@ -3,6 +3,11 @@ if (welcomeText && userName) {
     welcomeText.textContent = `Welcome, ${userName}`;
 }
 
+const cancelEditBtn = document.getElementById("cancel-edit-btn");
+if (cancelEditBtn) {
+    cancelEditBtn.addEventListener("click", cancelEdit);
+}
+
 const transactionForm = document.getElementById("transaction-form");
 
 const searchInput = document.getElementById("search-transactions");
