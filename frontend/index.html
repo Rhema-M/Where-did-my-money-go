@@ -6,7 +6,7 @@
 
     <title>Login - Where Did My Money Go?</title>
 
-    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
 </head>
 
 <body>
@@ -56,7 +56,7 @@
 
     </main>
 
-    <script src="js/login.js"></script>
+    <script src="{{ url_for('static', filename='js/login.js') }}"></script>
 
 </body>
 </html>

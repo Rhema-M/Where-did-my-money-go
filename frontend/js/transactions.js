@@ -1,3 +1,5 @@
+let currentFilteredTransactions = [];
+
 async function loadTransactions() {
 
     const tableBody = document.getElementById("transaction-list");
@@ -21,15 +23,21 @@ async function loadTransactions() {
         const transactions = await response.json();
 
         const filteredTransactions = filterTransactions(transactions);
+
+        currentFilteredTransactions = filteredTransactions;
+
+        loadTransactions();
+        loadAnalytics();
+        loadCategories();
+        loadSpendingTrend();
+
         displayTransactions(filteredTransactions);
 
         document.getElementById("transaction-count").textContent =
             `${filteredTransactions.length} transaction${filteredTransactions.length === 1 ? "" : "s"}`;
 
     } catch (error) {
-
         console.error("Error loading transactions:", error);
-
     }
 
 }

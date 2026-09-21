@@ -6,7 +6,7 @@
 
     <title>Where Did My Money Go?</title>
 
-    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
 </head>
 
 <body>
@@ -231,13 +231,13 @@
 
     </div>
 
-    <script src="js/auth.js"></script>
-    <script src="js/filters.js"></script>
-    <script src="js/transactions.js"></script>
-    <script src="js/modal.js"></script>
-    <script src="js/analytics.js"></script>
-    <script src="js/notifications.js"></script>
-    <script src="js/app.js"></script>
+        <script src="{{ url_for('static', filename='js/auth.js') }}"></script>
+        <script src="{{ url_for('static', filename='js/filters.js') }}"></script>
+        <script src="{{ url_for('static', filename='js/transactions.js') }}"></script>
+        <script src="{{ url_for('static', filename='js/modal.js') }}"></script>
+        <script src="{{ url_for('static', filename='js/analytics.js') }}"></script>
+        <script src="{{ url_for('static', filename='js/notifications.js') }}"></script>
+        <script src="{{ url_for('static', filename='js/app.js') }}"></script>
 
 </body>
 </html>
