@@ -45,6 +45,7 @@ JWT authentication protects the API, while database queries restrict transaction
 
 The application is currently intended as a **local development and portfolio project**. It is not deployed as a public web application.
 
+---
 
 ## Screenshots
 
@@ -59,6 +60,8 @@ The application is currently intended as a **local development and portfolio pro
 ### Edit Transaction
 
 ![Edit transaction modal](screenshots/edit-transaction.png)
+
+---
 
 ## Features
 
