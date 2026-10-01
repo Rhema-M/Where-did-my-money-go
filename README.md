@@ -47,6 +47,22 @@ The application is currently intended as a **local development and portfolio pro
 
 ---
 
+## Screenshots
+
+### Login
+
+![Login page](screenshots/login.png)
+
+### Dashboard and Analytics
+
+![Dashboard and analytics](screenshots/dashboard.png)
+
+### Edit Transaction
+
+![Edit transaction modal](screenshots/edit-transaction.png)
+
+---
+
 ## Features
 
 ### Authentication
