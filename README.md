@@ -1,30 +1,34 @@
 # Where Did My Money Go?
 
-Where Did My Money Go? is a full-stack personal finance tracker built with **Flask, MySQL, HTML, CSS, and JavaScript**.
+**Where Did My Money Go?** is a full-stack personal finance tracker built with **Python, Flask, MySQL, HTML, CSS, and JavaScript**.
 
-This project was created as a practical way to learn how real-world applications are designed, built, tested, and maintained. Every feature is developed from scratch—from database design and REST APIs to frontend integration, authentication, analytics, and version control with Git.
+This project was created as a practical learning project to understand how real-world applications are planned, developed, tested, and maintained. The application has been built incrementally, starting with database design and REST API development before progressing to authentication, frontend integration, analytics, user experience, and version control with Git and GitHub.
 
-The goal is not simply to build a budgeting application, but to understand how each component of a full-stack system works together.
+The main goal is not simply to build a finance tracker, but to understand how the different components of a full-stack application work together.
 
 ---
 
 ## Project Goal
 
-The purpose of this project is to gain hands-on experience building a complete web application using modern development practices.
+The purpose of this project is to gain hands-on experience building and maintaining a complete web application.
 
 Throughout the project, I am learning how to:
 
 * Design relational databases
 * Build REST APIs with Flask
 * Connect Python applications to MySQL
-* Implement full CRUD functionality
-* Create secure authentication using JWT
+* Implement CRUD functionality
+* Implement JWT-based authentication
+* Protect user-specific data
 * Build a responsive frontend with HTML, CSS, and JavaScript
-* Display financial analytics using charts and summaries
+* Integrate a frontend with a REST API
+* Build dynamic dashboards and analytics
+* Handle loading, error, and empty states
 * Test APIs with Postman
 * Use Git and GitHub for version control
+* Structure a project into maintainable frontend and backend modules
 
-The emphasis is on understanding the architecture and development process rather than only producing the final product.
+The emphasis is on understanding the development process rather than only producing the final application.
 
 ---
 
@@ -32,9 +36,11 @@ The emphasis is on understanding the architecture and development process rather
 
 ### Version 2 — Full-Stack Application
 
-The project now includes both a functional backend and a connected frontend.
+The project currently consists of a Flask backend, MySQL database, and connected frontend.
 
-Users can authenticate, manage transactions, and view spending analytics through a responsive dashboard that communicates with a Flask REST API.
+Users can register and log in, manage their financial transactions, filter their transaction history, and view financial information through a responsive dashboard.
+
+The application uses JWT authentication to protect user data and ensure that users can only access their own transactions.
 
 ---
 
@@ -44,60 +50,83 @@ Users can authenticate, manage transactions, and view spending analytics through
 
 * User registration
 * User login
+* Password hashing
 * JWT authentication
 * Protected API routes
+* Session management
+* Logout functionality
+* Automatic handling of expired sessions
 
 ### Transaction Management
 
 * Create income and expense transactions
 * Edit existing transactions
 * Delete transactions
-* View complete transaction history
+* View transaction history
 * Categorize transactions
 * Add optional notes
 * Select transaction dates
+* Input validation
+* User-specific transaction access
+
+### Transaction Filtering
+
+* Search transactions by title
+* Filter by transaction type
+* Filter by category
+* Clear filters
+* Dynamic transaction count based on filtered results
 
 ### Dashboard & Analytics
 
 * Current balance
 * Total income
 * Total expenses
+* Transaction count
 * Spending by category
 * Daily spending trend
-* Dynamic analytics cards
+* Dynamic summary calculations
+* Analytics that update according to the active filters
+* Positive, negative, and neutral balance states
 
 ### User Experience
 
-* Responsive interface
+* Responsive dashboard
+* Loading states
+* Empty states
+* Error states
+* Success and error notifications
 * Custom delete confirmation modal
-* Dynamic category loading
-* Client-side form validation
-* Backend error handling
+* Edit and cancel-edit functionality
+* Form validation
+* Income and expense visual distinction
+* Responsive layout for different screen sizes
 
 ---
 
 ## Tech Stack
 
-| Technology       | Purpose                       |
-| ---------------- | ----------------------------- |
-| Python           | Backend programming language  |
-| Flask            | REST API framework            |
-| MySQL            | Relational database           |
-| MySQL Connector  | Database connectivity         |
-| HTML5            | Frontend structure            |
-| CSS3             | Styling and responsive design |
-| JavaScript (ES6) | Frontend functionality        |
-| JWT              | User authentication           |
-| Postman          | API testing                   |
-| Git              | Version control               |
-| GitHub           | Repository hosting            |
+| Technology         | Purpose                       |
+| ------------------ | ----------------------------- |
+| Python             | Backend programming language  |
+| Flask              | REST API framework            |
+| MySQL              | Relational database           |
+| mysql.connector    | MySQL database connectivity   |
+| HTML5              | Frontend structure            |
+| CSS3               | Styling and responsive design |
+| JavaScript (ES6)   | Frontend functionality        |
+| Flask-JWT-Extended | JWT authentication            |
+| Werkzeug           | Password hashing              |
+| Postman            | API testing                   |
+| Git                | Version control               |
+| GitHub             | Repository hosting            |
 
 ---
 
 ## Project Structure
 
 ```text
-where-did-my-money-go/
+Where did my money go/
 │
 ├── backend/
 │   ├── routes/
@@ -106,28 +135,34 @@ where-did-my-money-go/
 │   │   └── analytics.py
 │   │
 │   ├── app.py
-│   ├── config.py
-│   ├── database.py
-│   └── requirements.txt
+│   └── database.py
 │
 ├── frontend/
 │   ├── index.html
+│   ├── dashboard.html
+│   │
 │   ├── css/
 │   │   └── style.css
+│   │
 │   └── js/
-│       └── app.js
+│       ├── app.js
+│       ├── auth.js
+│       ├── login.js
+│       ├── analytics.js
+│       ├── transactions.js
+│       ├── filters.js
+│       ├── modal.js
+│       └── notifications.js
 │
-├── postman/
 ├── .gitignore
 └── README.md
 ```
 
 ### Backend
 
-The backend is responsible for authentication, database communication, business logic, and analytics.
+The backend is responsible for authentication, database communication, transaction management, and analytics.
 
-* **app.py** — Flask application entry point
-* **config.py** — Configuration and environment settings
+* **app.py** — Flask application entry point, JWT configuration, CORS, and blueprint registration
 * **database.py** — MySQL connection management
 * **auth.py** — User registration and login
 * **transactions.py** — Transaction CRUD endpoints
@@ -135,38 +170,62 @@ The backend is responsible for authentication, database communication, business 
 
 ### Frontend
 
-The frontend communicates directly with the REST API using the Fetch API.
+The frontend communicates with the Flask REST API using JavaScript's Fetch API.
 
-* **index.html** — Dashboard layout
-* **style.css** — Responsive styling
-* **app.js** — API communication and UI logic
+* **index.html** — Login page
+* **dashboard.html** — Main application dashboard
+* **style.css** — Dashboard styling and responsive design
+* **app.js** — Application initialization and event listeners
+* **auth.js** — Authentication, session handling, and logout
+* **login.js** — Login functionality
+* **transactions.js** — Transaction loading, creation, editing, deletion, and display
+* **filters.js** — Transaction search and filtering
+* **analytics.js** — Dashboard calculations and financial analytics
+* **modal.js** — Delete confirmation modal
+* **notifications.js** — Frontend notification system
 
 ---
 
 ## Database Design
 
-The application uses a relational database with three primary tables.
+The application uses a relational MySQL database called `track_money`.
+
+The database contains three primary tables:
 
 ```text
-Users
-  │
-  │ 1
-  ▼
-Transactions
-  ▲
-  │
-  │ Many
-  │
-Categories
+user
+ │
+ │ 1
+ ▼
+transaction
+ ▲
+ │ Many
+ │
+category
 ```
+
+### Tables
+
+**user**
+
+Stores registered application users.
+
+**category**
+
+Stores transaction categories.
+
+**transaction**
+
+Stores income and expense transactions and connects them to users and categories.
 
 ### Relationships
 
 * One user can have many transactions.
 * One category can contain many transactions.
-* Every transaction belongs to one user and one category.
+* Every transaction belongs to one user.
+* Every transaction belongs to one category.
 
-This structure supports secure multi-user financial tracking.
+JWT authentication is used to identify the logged-in user, while database queries restrict transaction access to that user.
 
 ---
 
@@ -174,47 +233,52 @@ This structure supports secure multi-user financial tracking.
 
 ### Authentication
 
-| Method | Endpoint    | Description         |
-| ------ | ----------- | ------------------- |
-| POST   | `/register` | Create a new user   |
-| POST   | `/login`    | Authenticate a user |
+| Method | Endpoint         | Description                           |
+| ------ | ---------------- | ------------------------------------- |
+| POST   | `/auth/register` | Register a new user                   |
+| POST   | `/auth/login`    | Authenticate a user and receive a JWT |
 
 ### Transactions
 
-| Method | Endpoint             | Description               |
-| ------ | -------------------- | ------------------------- |
-| GET    | `/transactions`      | Retrieve all transactions |
-| POST   | `/transactions`      | Create a transaction      |
-| PUT    | `/transactions/<id>` | Update a transaction      |
-| DELETE | `/transactions/<id>` | Delete a transaction      |
+| Method | Endpoint             | Description                                    |
+| ------ | -------------------- | ---------------------------------------------- |
+| GET    | `/transactions`      | Retrieve the authenticated user's transactions |
+| GET    | `/transactions/<id>` | Retrieve a specific transaction                |
+| POST   | `/transactions`      | Create a transaction                           |
+| PUT    | `/transactions/<id>` | Update a transaction                           |
+| DELETE | `/transactions/<id>` | Delete a transaction                           |
 
 ### Analytics
 
-| Method | Endpoint                | Description                   |
-| ------ | ----------------------- | ----------------------------- |
-| GET    | `/analytics/summary`    | Balance, income, and expenses |
-| GET    | `/analytics/categories` | Spending grouped by category  |
-| GET    | `/analytics/trend`      | Daily spending totals         |
+| Method | Endpoint                | Description                           |
+| ------ | ----------------------- | ------------------------------------- |
+| GET    | `/analytics/summary`    | Retrieve financial summary data       |
+| GET    | `/analytics/categories` | Retrieve spending grouped by category |
+| GET    | `/analytics/trend`      | Retrieve daily spending totals        |
 
-All transaction and analytics endpoints require a valid JWT access token.
+Transaction and analytics endpoints require a valid JWT access token.
 
 ---
 
 ## API Testing
 
-The backend is tested using Postman before frontend integration.
+The backend was tested independently using Postman before and during frontend integration.
 
 Testing includes:
 
-* User registration and login
+* User registration
+* User login
 * JWT authentication
 * Protected routes
-* CRUD operations
+* Missing authentication tokens
+* Transaction CRUD operations
+* User transaction isolation
 * Analytics endpoints
-* Request validation
+* Input validation
 * Error handling
+* Expired authentication tokens
 
-This ensures the backend functions correctly as an independent service.
+Testing the backend independently helped verify that the API worked correctly before relying on the frontend.
 
 ---
 
@@ -223,8 +287,8 @@ This ensures the backend functions correctly as an independent service.
 ### 1. Clone the repository
 
 ```bash
-git clone https://github.com/YOUR_USERNAME/where-did-my-money-go.git
-cd where-did-my-money-go
+git clone https://github.com/Rhema-M/Where-did-my-money-go.git
+cd Where-did-my-money-go
 ```
 
 ### 2. Create a virtual environment
@@ -235,10 +299,16 @@ python -m venv venv
 
 ### 3. Activate the environment
 
-**Windows**
+**Windows Command Prompt / PowerShell**
 
 ```bash
 venv\Scripts\activate
+```
+
+If using Git Bash:
+
+```bash
+source venv/Scripts/activate
 ```
 
 ### 4. Install dependencies
@@ -249,13 +319,15 @@ pip install -r backend/requirements.txt
 
 ### 5. Configure MySQL
 
-Create the required MySQL database and update your database credentials in:
+Create the required MySQL database and tables.
+
+The application currently uses the database:
 
 ```text
-backend/config.py
+track_money
 ```
 
-Ensure your MySQL server is running before starting the application.
+Make sure your MySQL server is running and that the database connection settings in the backend are configured correctly.
 
 ### 6. Start the Flask server
 
@@ -264,7 +336,7 @@ cd backend
 python app.py
 ```
 
-The API runs locally at:
+The Flask API runs locally at:
 
 ```text
 http://127.0.0.1:5000
@@ -272,7 +344,13 @@ http://127.0.0.1:5000
 
 ### 7. Launch the frontend
 
-Open `frontend/index.html` in your browser while the Flask server is running.
+Open:
+
+```text
+frontend/index.html
+```
+
+in a browser while the Flask server is running.
 
 ---
 
@@ -284,50 +362,87 @@ Open `frontend/index.html` in your browser while the Flask server is running.
 * [x] Database design
 * [x] MySQL integration
 * [x] Flask application setup
+* [x] Flask Blueprints
 * [x] JWT authentication
+* [x] Password hashing
 * [x] User registration and login
+* [x] Protected routes
+* [x] User-specific transaction access
 * [x] Create transactions
 * [x] Retrieve transactions
+* [x] Retrieve individual transactions
 * [x] Update transactions
 * [x] Delete transactions
 * [x] Analytics endpoints
 * [x] Input validation
 * [x] Error handling
+* [x] API testing with Postman
 
 ### Frontend
 
-* [x] Responsive dashboard
+* [x] Login page
+* [x] JWT session handling
+* [x] Dashboard
+* [x] Responsive layout
 * [x] Balance summary cards
 * [x] Add transaction form
 * [x] Transaction history table
 * [x] Edit transactions
 * [x] Delete confirmation modal
-* [x] Dynamic category loading
-* [x] Analytics integration
+* [x] Transaction search
 * [x] Transaction filtering
+* [x] Dynamic category loading
+* [x] Financial analytics
+* [x] Loading states
+* [x] Empty states
+* [x] Error states
+* [x] Notification system
+* [x] Session expiration handling
+* [x] Live dashboard calculations
+* [x] Filter-dependent analytics
+* [x] Frontend JavaScript modularization
 
 ---
 
-## Roadmap
+## Development Roadmap
 
 ### Completed
 
 * Full CRUD transaction management
 * User authentication
+* JWT-protected API
+* User-specific data access
 * Financial dashboard
+* Transaction filtering
 * Spending analytics
 * Responsive frontend
 * REST API integration
+* Frontend error and loading handling
+* Frontend modularization
+* Git and GitHub development workflow
 
-### Planned
+### Remaining
+
+* Security and production configuration review
+* Final application testing
+* Deployment preparation
+* Cloud deployment
+* Final documentation and screenshots
+* Portfolio presentation and polish
+
+### Future Features
+
+After the first published version, the application may be expanded with features such as:
 
 * Budget tracking
 * Savings goals
 * Recurring transactions
-* Advanced search and filters
+* Advanced financial analytics
 * CSV/PDF export
-* Dark mode
-* Cloud deployment
+* Additional dashboard visualizations
+* Password reset
+* User settings
+* Additional account features
 
 ---
 
@@ -335,20 +450,27 @@ Open `frontend/index.html` in your browser while the Flask server is running.
 
 This project serves as my practical introduction to full-stack software development.
 
-Topics explored include:
+The project has allowed me to work with:
 
 * REST API architecture
 * CRUD operations
 * JWT authentication
+* Password hashing
 * Relational database design
 * SQL and foreign keys
 * Flask Blueprints
+* API authentication and authorization
 * Frontend API integration
 * Asynchronous JavaScript
+* Client-side filtering
+* Dynamic dashboard calculations
+* Error and loading-state handling
 * Git and GitHub workflows
-* Debugging with Postman
+* API testing with Postman
+* Debugging and incremental development
+* Frontend code organization
 
-Each feature is implemented incrementally to mirror a real software development process.
+Each feature has been implemented incrementally so that I can understand not only how to build the feature, but also how it fits into the larger application architecture.
 
 ---
 
@@ -364,4 +486,8 @@ Aspiring Full-Stack Developer
 
 ## Project Status
 
-This project is actively being developed and will continue to expand as I learn new technologies and software engineering concepts. It forms part of my personal development portfolio and demonstrates my progression toward becoming a full-stack developer.
+The application is currently in the final development stage before its first public deployment.
+
+The core backend, database, authentication system, transaction management, frontend dashboard, filtering, and analytics functionality have been implemented.
+
+The remaining work focuses on security hardening, final testing, deployment, documentation, and portfolio preparation.
