@@ -26,7 +26,6 @@ async function loadTransactions() {
 
         currentFilteredTransactions = filteredTransactions;
 
-        loadTransactions();
         loadAnalytics();
         loadCategories();
         loadSpendingTrend();
@@ -48,9 +47,9 @@ function displayTransactions(transactions) {
 
     tableBody.innerHTML = "";
 
-            if (transactions.length === 0) {
+    if (transactions.length === 0) {
 
-            tableBody.innerHTML = `
+        tableBody.innerHTML = `
                 <tr>
                     <td colspan="5" class="no-transactions">
                         No transactions found.
@@ -58,8 +57,8 @@ function displayTransactions(transactions) {
                 </tr>
             `;
 
-            return;
-        }
+        return;
+    }
 
     transactions.forEach(transaction => {
 
@@ -71,7 +70,7 @@ function displayTransactions(transactions) {
             year: "numeric"
         });
 
-                const amount = parseFloat(transaction.amount).toFixed(2);
+        const amount = parseFloat(transaction.amount).toFixed(2);
         const amountClass =
             transaction.transaction_type === "income"
                 ? "income"
@@ -165,38 +164,38 @@ async function addTransaction(event) {
 
 
 
-            const title = document.getElementById("title").value.trim();
-            const amount = parseFloat(document.getElementById("amount").value);
-            const transactionType = document.getElementById("transaction-type").value;
-            const categoryId = parseInt(document.getElementById("category").value);
-            const transactionDate = document.getElementById("transaction-date").value;
-            const notes = document.getElementById("notes").value.trim();
+    const title = document.getElementById("title").value.trim();
+    const amount = parseFloat(document.getElementById("amount").value);
+    const transactionType = document.getElementById("transaction-type").value;
+    const categoryId = parseInt(document.getElementById("category").value);
+    const transactionDate = document.getElementById("transaction-date").value;
+    const notes = document.getElementById("notes").value.trim();
 
-            if (title === "") {
-                showNotification("Please enter a description.", "error");
-                return;
-            }
+    if (title === "") {
+        showNotification("Please enter a description.", "error");
+        return;
+    }
 
-            if (isNaN(amount) || amount <= 0) {
-                showNotification("Please enter a valid amount greater than R0.00.", "error");
-                return;
-            }
+    if (isNaN(amount) || amount <= 0) {
+        showNotification("Please enter a valid amount greater than R0.00.", "error");
+        return;
+    }
 
-            if (!transactionDate) {
-                showNotification("Please select a transaction date.", "error");
-                return;
-            }
+    if (!transactionDate) {
+        showNotification("Please select a transaction date.", "error");
+        return;
+    }
 
-            const transaction = {
+    const transaction = {
 
-                title: title,
-                amount: amount,
-                transaction_type: transactionType,
-                category_id: categoryId,
-                transaction_date: transactionDate,
-                notes: notes
+        title: title,
+        amount: amount,
+        transaction_type: transactionType,
+        category_id: categoryId,
+        transaction_date: transactionDate,
+        notes: notes
 
-            };
+    };
 
     const isEditing = transactionToEdit !== null;
 
@@ -232,7 +231,7 @@ async function addTransaction(event) {
             );
 
         }
-        
+
         if (handleUnauthorized(response)) return;
 
         const result = await response.json();
@@ -262,9 +261,6 @@ async function addTransaction(event) {
             "Add Transaction";
 
         loadTransactions();
-        loadAnalytics();
-        loadCategories();
-        loadSpendingTrend();
 
     } catch (error) {
 
@@ -319,9 +315,6 @@ async function confirmDeleteTransaction() {
         closeDeleteModal();
 
         loadTransactions();
-        loadAnalytics();
-        loadCategories();
-        loadSpendingTrend();
 
     } catch (error) {
 

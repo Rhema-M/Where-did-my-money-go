@@ -3,7 +3,7 @@ const API_URL = "http://127.0.0.1:5000";
 const token = localStorage.getItem("access_token");
 
 if (!token) {
-    window.location.href = "index.html";
+    window.location.href = "/";
 }
 
 const userName = localStorage.getItem("user_name");
@@ -37,5 +37,5 @@ function logout() {
     localStorage.removeItem("access_token");
     localStorage.removeItem("user_name");
 
-    window.location.href = "index.html";
+    window.location.href = "/";
 }

@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+
+<title>Register - Where Did My Money Go?</title>
+
+<link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+
+
+</head>
+
+<body>
+
+
+<header>
+    <h1>Where Did My Money Go?</h1>
+    <p>Create an account to start managing your finances.</p>
+</header>
+
+<main>
+
+    <section class="login-section">
+
+        <h2>Create Account</h2>
+
+        <form id="register-form">
+
+            <div class="form-group">
+                <label for="register-name">Name</label>
+                <input
+                    type="text"
+                    id="register-name"
+                    name="name"
+                    placeholder="Enter your name"
+                    required
+                >
+            </div>
+
+            <div class="form-group">
+                <label for="register-email">Email</label>
+                <input
+                    type="email"
+                    id="register-email"
+                    name="email"
+                    placeholder="Enter your email"
+                    required
+                >
+            </div>
+
+            <div class="form-group">
+                <label for="register-password">Password</label>
+                <input
+                    type="password"
+                    id="register-password"
+                    name="password"
+                    placeholder="Enter a password"
+                    required
+                >
+            </div>
+
+            <button type="submit">Register</button>
+
+            <p id="register-message"></p>
+
+        </form>
+
+        <p>
+            Already have an account?
+            <a href="/">Login</a>
+        </p>
+
+    </section>
+
+</main>
+
+<script src="{{ url_for('static', filename='js/register.js') }}"></script>
+
+
+</body>
+</html>
